@@ -1,0 +1,87 @@
+/*--form field elements--*/
+#scce-add-edit-sc .form-field input[type=email],
+#scce-add-edit-sc .form-field input[type=number],
+#scce-add-edit-sc .form-field input[type=password],
+#scce-add-edit-sc .form-field input[type=search],
+#scce-add-edit-sc .form-field input[type=tel],
+#scce-add-edit-sc .form-field input[type=text],
+#scce-add-edit-sc .form-field input[type=url],
+#scce-add-edit-sc .form-field textarea {
+	width: 100%;
+}
+/*#scce-add-edit-sc .description { display: block; }*/
+/*----------*/
+
+/*--form error display--*/
+#scce-add-edit-sc span.error { color: red; }
+.scce-invalid {
+	border-color: #dc3232 !important;
+	box-shadow: 0 0 2px rgba(204,0,0,.8) !important;
+}
+/*----------*/
+
+/*--scce atts list table--*/
+/*#scce-atts-list table{ width: 100% }*/
+#scce-atts-list table th,
+#scce-atts-list table td {
+	padding: 7px 10px 7px 10px;
+}
+@media screen and (max-width: 782px) {
+	#scce-atts-list table thead th.column-primary {
+		box-sizing: border-box;
+	}
+}
+/*----------*/
+
+/*--scce atts add or remove button--*/
+#scce-atts-list button{
+	margin-left: 3px;
+}
+.scce-addremove-atts button.scce-addmore-atts-btn:hover,
+.scce-addremove-atts button.scce-addmore-atts-btn:focus,
+.scce-addremove-atts button.scce-addmore-atts-btn:active {
+	box-shadow: 0 0 0 1px #fff, 0 0 0 3px #0071a1;
+}
+.scce-addremove-atts button.scce-remove-atts-btn,
+.scce-addremove-atts button.scce-remove-atts-btn:hover,
+.scce-addremove-atts button.scce-remove-atts-btn:focus,
+.scce-addremove-atts button.scce-remove-atts-btn:active {
+	background-color: #FF0000;
+	border-color: #FF0000;
+	color:#ffffff;
+	box-shadow: 0 0 0 1px #FF0000;
+}
+.scce-addremove-atts button.scce-remove-atts-btn:hover,
+.scce-addremove-atts button.scce-remove-atts-btn:focus,
+.scce-addremove-atts button.scce-remove-atts-btn:active {
+	box-shadow: 0 0 0 1px #fff, 0 0 0 3px #FF0000;
+}
+.scce-addremove-atts button.scce-remove-atts-btn {
+	overflow: hidden;
+	text-align: center;
+}
+.scce-addremove-atts button span.dashicons {
+	display: inline-block;
+	vertical-align: middle;
+	line-height: normal;
+}
+/*----------*/
+
+/*--submit button--*/
+#scce-add-edit-sc .submit .button:hover {
+	color: #f3f5f6;
+	background: #0071a1;
+}
+/*----------*/
+
+/*--scce CodeMirror--*/
+#scce-add-edit-sc .CodeMirror {
+	border: 1px solid #ddd;
+	border-radius: 4px;
+}
+#scce-add-edit-sc .CodeMirror-focused {
+	border-color: #007cba;
+	box-shadow: 0 0 0 1px #007cba;
+	outline: 2px solid transparent;
+}
+/*----------*/
