@@ -306,6 +306,7 @@ class Shortcode_Creator_Easy {
 			add_filter( 'admin_footer_text', array( $this, 'scce_admin_footer_text' ), 11 );
 			
 			// change the version text in the admin area footer
+			add_filter( 'update_footer', array( $this, 'scce_admin_footer_version' ), 11 );
 			
 		}
 		
