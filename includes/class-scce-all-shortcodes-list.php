@@ -73,7 +73,7 @@ class SCCE_Shortcode_List_Table extends WP_List_Table {
 		) );
 		
 		// search key if a search was performed.
-		$search_key				= isset( $_REQUEST['s'] ) ? wp_unslash( trim( $_REQUEST['s'] ) ) : '';
+		$search_key				= isset( $_REQUEST['s'] ) ? scce_sanitize_deep( trim( $_REQUEST['s'] ) ) : '';
 		
 		// get required data from the table according to the query string
 		$shortcodes				= $this->scce_get_shortcodes( $per_page, $current_page, $search_key );
@@ -96,27 +96,29 @@ class SCCE_Shortcode_List_Table extends WP_List_Table {
 		
 		global $wpdb;
 		
-		$sql		= "SELECT * FROM {$this->table_name}";
+		$sql	= "SELECT * FROM {$this->table_name}";
 		
 		// filter the data if a search was performed
-		if ( ! empty( $search_key ) ) {
-			$sql	.= " WHERE scce_tag LIKE '%{$search_key}%' OR scce_output LIKE '%{$search_key}%'";
-		}
+		$sql	.= " WHERE scce_tag LIKE %s OR scce_output LIKE %s";
 		
 		// if any column is clicked to order the data
-		if ( ! empty( $_REQUEST[ 'orderby' ] ) ) {
-			$sql	.= ' ORDER BY ' . esc_sql( $_REQUEST[ 'orderby' ] );
-			$sql	.= ! empty( $_REQUEST[ 'order' ] ) ? ' ' . esc_sql( $_REQUEST[ 'order' ] ) : ' ASC';
-		} else {
-			$sql	.= ' ORDER BY scce_tag';
-			$sql	.= ' DESC';
-		}
+		$order_by   = ! empty( $_REQUEST[ 'orderby' ] ) ? scce_sanitize_deep( $_REQUEST[ 'orderby' ] ) : 'scce_id';
+		$order      = ! empty( $_REQUEST[ 'order' ] ) ? scce_sanitize_deep( $_REQUEST[ 'order' ] ) : 'DESC';
+		$sql	.= ' ORDER BY %s %s';
 		
 		// query to display the item according to the pagination
-		$sql		.= " LIMIT $per_page";
-		$sql		.= ' OFFSET ' . ( $page_number - 1 ) * $per_page;
+		$sql	.= " LIMIT %d";
+		$sql	.= ' OFFSET %d';
 		
-		$result		= $wpdb->get_results( $sql, 'ARRAY_A' );
+		//$result		= $wpdb->get_results( $sql, 'ARRAY_A' );
+		$result		= $wpdb->get_results( $wpdb->prepare( $sql,
+			'%' . esc_sql( $search_key ) . '%',
+			'%' . esc_sql( $search_key ) . '%',
+			esc_sql( $order_by ),
+			esc_sql( $order ),
+			(int)esc_sql( $per_page ),
+			(int)esc_sql( ( $page_number - 1 ) * $per_page )
+		), 'ARRAY_A' );
 		
 		return $result;
 		
