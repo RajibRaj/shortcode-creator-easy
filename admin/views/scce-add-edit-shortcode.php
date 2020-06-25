@@ -16,7 +16,7 @@ global $shortcode;
 ?>
 <!--According to the default wp form template design-->
 <div class="wrap">
-	<h2><?php echo __( 'Add/Edit Shortcode', 'shortcode-creator-easy' ); ?></h2>
+	<h2><?php echo _x( 'Add/Edit Shortcode', 'Page Heading', 'shortcode-creator-easy' ); ?></h2>
 	<hr class="wp-header-end">
 	
 	<form name="scce_add_edit_sc" method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" class="scce-add-edit-sc" id="scce-add-edit-sc" enctype="multipart/form-data" onsubmit="return scceValidateForm( this );">
