@@ -108,6 +108,21 @@ class SCCE_DB_Table {
 	}
 	
 	/**
+	 * Get all shortcode data.
+	 *
+	 * @param int $id scce_id
+	 *
+	 * @return array|object|null
+	 */
+	public function scce_get_shortcode() {
+		
+		global $wpdb;
+		
+		return $wpdb->get_results( "SELECT scce_id, scce_tag, scce_status FROM {$wpdb->scce_shortcodes}" );
+		
+	}
+	
+	/**
 	 * Get shortcode data from id.
 	 *
 	 * @param int $id scce_id
