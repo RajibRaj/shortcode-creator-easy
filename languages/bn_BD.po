@@ -1,0 +1,251 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"POT-Creation-Date: 2020-06-26 03:48+0600\n"
+"PO-Revision-Date: 2020-06-26 03:48+0600\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: bn_BD\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.3.1\n"
+"X-Poedit-Basepath: ..\n"
+"Plural-Forms: nplurals=2; plural=(n==0 || n==1);\n"
+"X-Poedit-KeywordsList: __;_e;esc_html__;esc_html_e;_x;_n\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#: admin/class-scce-admin.php:143
+msgid "Shortcode Creator Easy"
+msgstr ""
+
+#: admin/class-scce-admin.php:143
+msgid "SC Creator Easy"
+msgstr ""
+
+#: admin/class-scce-admin.php:146
+msgid "All Shortcodes"
+msgstr ""
+
+#: admin/class-scce-admin.php:148 admin/views/scce-add-edit-shortcode.php:25
+msgid "Add/Edit Shortcode"
+msgstr ""
+
+#: admin/class-scce-admin.php:187
+msgid "Shortcodes Per Page"
+msgstr ""
+
+#: admin/views/scce-add-edit-shortcode.php:36
+#: admin/views/scce-add-edit-shortcode.php:39
+msgid "Shortcode Tag"
+msgstr ""
+
+#: admin/views/scce-add-edit-shortcode.php:36
+#: admin/views/scce-add-edit-shortcode.php:112
+msgid "(required)"
+msgstr ""
+
+#: admin/views/scce-add-edit-shortcode.php:40
+msgid ""
+"Maximum 100 characters. You can use dash(-) to separate words and all should "
+"be lowercase."
+msgstr ""
+
+#: admin/views/scce-add-edit-shortcode.php:40
+#: admin/views/scce-add-edit-shortcode.php:116
+msgid "Field is required"
+msgstr ""
+
+#: admin/views/scce-add-edit-shortcode.php:45
+msgid "Shortcode Attributes"
+msgstr ""
+
+#: admin/views/scce-add-edit-shortcode.php:51
+msgid "Attribute Specifier"
+msgstr ""
+
+#: admin/views/scce-add-edit-shortcode.php:52
+msgid "Attribute Key"
+msgstr ""
+
+#: admin/views/scce-add-edit-shortcode.php:53
+msgid "Default Value"
+msgstr ""
+
+#: admin/views/scce-add-edit-shortcode.php:67
+#: admin/views/scce-add-edit-shortcode.php:86
+msgid "Show details"
+msgstr ""
+
+#: admin/views/scce-add-edit-shortcode.php:70
+msgid "attribute key (all lowercase)"
+msgstr ""
+
+#: admin/views/scce-add-edit-shortcode.php:71
+#: admin/views/scce-add-edit-shortcode.php:90
+msgid "Attribute Value"
+msgstr ""
+
+#: admin/views/scce-add-edit-shortcode.php:89
+msgid "Attribute Key (all lowercase)"
+msgstr ""
+
+#: admin/views/scce-add-edit-shortcode.php:94
+msgid ""
+"You are about to delete this item. It cannot be restored at a later time! "
+"Continue?"
+msgstr ""
+
+#: admin/views/scce-add-edit-shortcode.php:97
+#, php-format
+msgid ""
+"NOTE: Specify the %1$s with respective attribute name in the shortcode "
+"output where you want to use the attribute."
+msgstr ""
+
+#: admin/views/scce-add-edit-shortcode.php:102
+msgid "Closing Type"
+msgstr ""
+
+#: admin/views/scce-add-edit-shortcode.php:106
+msgid "Enclosing Shortcode"
+msgstr ""
+
+#: admin/views/scce-add-edit-shortcode.php:107
+#, php-format
+msgid ""
+"NOTE: Specify the word %1$s where you want to show the content of an "
+"enclosing shortcode. It is Must for enclosing shortcode!!!"
+msgstr ""
+
+#: admin/views/scce-add-edit-shortcode.php:112
+msgid "Shortcode Output"
+msgstr ""
+
+#: admin/views/scce-add-edit-shortcode.php:115
+msgid ""
+"Write some text/html/javascript/css here as the content of the shortcode..."
+msgstr ""
+
+#: admin/views/scce-view-all-shortcodes.php:30
+#: includes/class-scce-all-shortcodes-list.php:49
+msgid "Shortcodes"
+msgstr ""
+
+#: admin/views/scce-view-all-shortcodes.php:31
+msgid "Add New"
+msgstr ""
+
+#: admin/views/scce-view-all-shortcodes.php:36
+msgid "Search Shortcode"
+msgstr ""
+
+#: includes/class-scce-all-shortcodes-list.php:48
+#: includes/class-scce-all-shortcodes-list.php:181
+msgid "Shortcode"
+msgstr ""
+
+#: includes/class-scce-all-shortcodes-list.php:146
+msgid "No shortcode available."
+msgstr ""
+
+#: includes/class-scce-all-shortcodes-list.php:180
+msgid "Tag"
+msgstr ""
+
+#: includes/class-scce-all-shortcodes-list.php:182
+msgid "Attributes"
+msgstr ""
+
+#: includes/class-scce-all-shortcodes-list.php:183
+msgid "Enclosing"
+msgstr ""
+
+#: includes/class-scce-all-shortcodes-list.php:184
+msgid "Output"
+msgstr ""
+
+#: includes/class-scce-all-shortcodes-list.php:244
+msgid "Edit"
+msgstr ""
+
+#: includes/class-scce-all-shortcodes-list.php:260
+#: includes/class-scce-all-shortcodes-list.php:317
+msgid "Delete"
+msgstr ""
+
+#: includes/class-scce-all-shortcodes-list.php:261
+msgid "Are you sure to delete this shortcode?"
+msgstr ""
+
+#: includes/class-scce-form-response.php:102
+msgid "You missed to specify the position of"
+msgstr ""
+
+#: includes/class-scce-form-response.php:162
+#: includes/class-scce-process-actions.php:206
+msgid "No shortcode found"
+msgstr ""
+
+#: includes/class-scce-form-response.php:177
+msgid "The file not found!"
+msgstr ""
+
+#: includes/class-scce-form-response.php:242
+msgid "The shortcode saved successfully."
+msgstr ""
+
+#: includes/class-scce-form-response.php:253
+msgid "The shortcode can not be saved in the database"
+msgstr ""
+
+#: includes/class-scce-form-response.php:259
+msgid "The shortcode can not be stored"
+msgstr ""
+
+#: includes/class-scce-form-response.php:272
+msgid "The shortcode output code can not be empty!"
+msgstr ""
+
+#: includes/class-scce-form-response.php:280
+msgid "Shortcode ID not found"
+msgstr ""
+
+#: includes/class-scce-form-response.php:284
+msgid "The shortcode already exist"
+msgstr ""
+
+#: includes/class-scce-form-response.php:292
+msgid "The shortcode tag can not be empty"
+msgstr ""
+
+#: includes/class-scce-form-response.php:298
+#: includes/class-scce-process-actions.php:104
+#: includes/class-scce-process-actions.php:132
+#: includes/class-scce-process-actions.php:189
+msgid "Invalid nonce verification"
+msgstr ""
+
+#: includes/class-scce-form-response.php:298
+#: includes/class-scce-process-actions.php:104
+#: includes/class-scce-process-actions.php:132
+#: includes/class-scce-process-actions.php:189
+msgid "Error"
+msgstr ""
+
+#: includes/class-scce-form-response.php:307
+msgid "You do not have the sufficient permission to do this task!"
+msgstr ""
+
+#: includes/class-scce-process-actions.php:164
+#, php-format
+msgid "%s shortcode permanently deleted"
+msgstr ""
+
+#: includes/class-scce-process-actions.php:214
+msgid "Invalid ID or no item selected"
+msgstr ""
+
+#: includes/class-shortcode-creator-easy.php:339
+msgid "Thanks for using"
+msgstr ""
