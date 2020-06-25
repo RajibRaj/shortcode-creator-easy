@@ -267,6 +267,7 @@ class Shortcode_Creator_Easy {
 			add_filter( 'set-screen-option', array( $this, 'scce_set_option' ), 11, 3 );
 			add_filter( 'set_screen_option_shortcodes_per_page', array( $this, 'scce_set_option' ), 11, 3 );
 			
+			// for the actions from the shortcode list table
 			if ( current_user_can( 'manage_options' ) ) {
 				
 				// responsible to process the actions
@@ -334,7 +335,10 @@ class Shortcode_Creator_Easy {
 	 * @since    1.0.0
 	 */
 	public function scce_admin_footer_text() {
-		return sprintf( __( '<span id="footer-thankyou">Thanks for using <a href="%1$s">%2$s</a></span>', 'shortcode-creator-easy' ), esc_url( '#' ), esc_html( 'Shortcode Creator Easy' ) );
+		
+		$thank_text = __( 'Thanks for using', 'shortcode-creator-easy' );
+		
+		return sprintf( '<span id="footer-thankyou">%1$s <a href="%2$s">%3$s</a></span>', esc_html( $thank_text ), esc_url( '#' ), esc_html( 'Shortcode Creator Easy' ) );
 	}
 	
 	/**
