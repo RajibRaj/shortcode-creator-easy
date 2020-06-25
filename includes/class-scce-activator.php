@@ -64,7 +64,7 @@ class SCCE_Activator {
 		} else {
 			
 			// enable all the shortcodes by changing the status to 1 to the db
-			$all_shortcodes = SCCE_DB_Table::scce_db_table_instance()->scce_get_shortcode();
+			/*$all_shortcodes = SCCE_DB_Table::scce_db_table_instance()->scce_get_shortcode();
 			
 			foreach ( $all_shortcodes as $shortcode ) {
 				
@@ -77,7 +77,7 @@ class SCCE_Activator {
 					array( '%d' )
 				);
 				
-			}
+			}*/
 			
 		}
 		
