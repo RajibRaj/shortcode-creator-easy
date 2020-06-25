@@ -99,21 +99,21 @@ class SCCE_Shortcode_List_Table extends WP_List_Table {
 		$sql	= "SELECT * FROM {$this->table_name}";
 		
 		// filter the data if a search was performed
-		$sql	.= " WHERE scce_tag LIKE %s OR scce_output LIKE %s";
+		$sql	.= " WHERE scce_tag LIKE '%1s' OR scce_output LIKE '%2s'";
 		
 		// if any column is clicked to order the data
 		$order_by   = ! empty( $_REQUEST[ 'orderby' ] ) ? scce_sanitize_deep( $_REQUEST[ 'orderby' ] ) : 'scce_id';
 		$order      = ! empty( $_REQUEST[ 'order' ] ) ? scce_sanitize_deep( $_REQUEST[ 'order' ] ) : 'DESC';
-		$sql	.= ' ORDER BY %s %s';
+		$sql	.= ' ORDER BY %3s %4s';
 		
 		// query to display the item according to the pagination
-		$sql	.= " LIMIT %d";
-		$sql	.= ' OFFSET %d';
+		$sql	.= " LIMIT %5d";
+		$sql	.= ' OFFSET %6d';
 		
 		//$result		= $wpdb->get_results( $sql, 'ARRAY_A' );
 		$result		= $wpdb->get_results( $wpdb->prepare( $sql,
-			'%' . esc_sql( $search_key ) . '%',
-			'%' . esc_sql( $search_key ) . '%',
+			'%' . $wpdb->esc_like( $search_key ) . '%',
+			'%' . $wpdb->esc_like( $search_key ) . '%',
 			esc_sql( $order_by ),
 			esc_sql( $order ),
 			(int)esc_sql( $per_page ),
