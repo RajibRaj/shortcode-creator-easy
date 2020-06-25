@@ -1,4 +1,7 @@
 <?php
+// if this file is called directly, abort
+if ( ! defined( 'ABSPATH' ) ) die( 'Direct access denied!' );
+
 /**
  * The file stores all the shortcode created using this plugin
  *
