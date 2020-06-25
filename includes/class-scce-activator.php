@@ -61,6 +61,24 @@ class SCCE_Activator {
 			
 			dbDelta( $table_structures['scce_shortcodes'] );
 			
+		} else {
+			
+			// enable all the shortcodes by changing the status to 1 to the db
+			$all_shortcodes = SCCE_DB_Table::scce_db_table_instance()->scce_get_shortcode();
+			
+			foreach ( $all_shortcodes as $shortcode ) {
+				
+				$result = $wpdb->update( $this->table_name,
+					array(
+						'scce_status' => 1,
+					),
+					array( 'scce_id' => $shortcode->scce_id ),
+					array( '%s' ),
+					array( '%d' )
+				);
+				
+			}
+			
 		}
 		
 	}
