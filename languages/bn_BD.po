@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "POT-Creation-Date: 2020-06-26 03:48+0600\n"
-"PO-Revision-Date: 2020-06-26 03:48+0600\n"
+"PO-Revision-Date: 2020-06-26 03:56+0600\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: bn_BD\n"
@@ -17,60 +17,62 @@ msgstr ""
 
 #: admin/class-scce-admin.php:143
 msgid "Shortcode Creator Easy"
-msgstr ""
+msgstr "Shortcode Creator Easy"
 
 #: admin/class-scce-admin.php:143
 msgid "SC Creator Easy"
-msgstr ""
+msgstr "SC Creator Easy"
 
 #: admin/class-scce-admin.php:146
 msgid "All Shortcodes"
-msgstr ""
+msgstr "সকল শর্টকোড"
 
 #: admin/class-scce-admin.php:148 admin/views/scce-add-edit-shortcode.php:25
 msgid "Add/Edit Shortcode"
-msgstr ""
+msgstr "শর্টকোড যোগ/সম্পাদন করুন"
 
 #: admin/class-scce-admin.php:187
 msgid "Shortcodes Per Page"
-msgstr ""
+msgstr "প্রতি পৃষ্ঠায় শর্টকোড"
 
 #: admin/views/scce-add-edit-shortcode.php:36
 #: admin/views/scce-add-edit-shortcode.php:39
 msgid "Shortcode Tag"
-msgstr ""
+msgstr "শর্টকোড ট্যাগ"
 
 #: admin/views/scce-add-edit-shortcode.php:36
 #: admin/views/scce-add-edit-shortcode.php:112
 msgid "(required)"
-msgstr ""
+msgstr "(আবশ্যক)"
 
 #: admin/views/scce-add-edit-shortcode.php:40
 msgid ""
 "Maximum 100 characters. You can use dash(-) to separate words and all should "
 "be lowercase."
 msgstr ""
+"সর্বোচ্চ ১০০ অক্ষর। আপনি শব্দ পৃথক করতে ড্যাশ(-) ব্যবহার করতে পারেন এবং সব ছোট "
+"হাতের অক্ষর হওয়া উচিত।"
 
 #: admin/views/scce-add-edit-shortcode.php:40
 #: admin/views/scce-add-edit-shortcode.php:116
 msgid "Field is required"
-msgstr ""
+msgstr "Field is required"
 
 #: admin/views/scce-add-edit-shortcode.php:45
 msgid "Shortcode Attributes"
-msgstr ""
+msgstr "শর্টকোড বৈশিষ্ট"
 
 #: admin/views/scce-add-edit-shortcode.php:51
 msgid "Attribute Specifier"
-msgstr ""
+msgstr "বৈশিষ্ট নির্দেশক"
 
 #: admin/views/scce-add-edit-shortcode.php:52
 msgid "Attribute Key"
-msgstr ""
+msgstr "বৈশিষ্ট কী"
 
 #: admin/views/scce-add-edit-shortcode.php:53
 msgid "Default Value"
-msgstr ""
+msgstr "ডিফল্ট মান"
 
 #: admin/views/scce-add-edit-shortcode.php:67
 #: admin/views/scce-add-edit-shortcode.php:86
