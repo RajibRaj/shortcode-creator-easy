@@ -1,4 +1,6 @@
 <?php
+// if this file is called directly, abort
+if ( ! defined( 'ABSPATH' ) ) die( 'Direct access denied!' );
 
 /**
  * Provide an admin area view for all the shortcode created by this plugin
@@ -11,6 +13,10 @@
  * @package    Shortcode_Creator_Easy
  * @subpackage Shortcode_Creator_Easy/admin/partials
  */
+
+if ( ! current_user_can( 'manage_options' ) ) {
+	wp_die( 'You are not capable to view this page!' );
+}
 
 if( ! class_exists( 'SCCE_Shortcode_List_Table' ) ) {
 	require_once( SCCE_ABSPATH . 'includes/class-scce-all-shortcodes-list.php' );
