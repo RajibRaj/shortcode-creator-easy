@@ -49,11 +49,3 @@ function scce_start() {
 }
 
 scce_start();
-
-
-
-function pr( $value ) {
-	echo '<pre>';
-	print_r( $value );
-	echo '</pre>';
-}
