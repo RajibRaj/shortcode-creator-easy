@@ -52,7 +52,7 @@ class SCCE_Deactivator {
 		global $wpdb;
 		
 		// disable all the shortcodes by changing the status to 0 to the db
-		$all_shortcodes = SCCE_DB_Table::scce_db_table_instance()->scce_get_shortcode();
+		/*$all_shortcodes = SCCE_DB_Table::scce_db_table_instance()->scce_get_shortcode();
 		
 		foreach ( $all_shortcodes as $shortcode ) {
 			
@@ -65,7 +65,7 @@ class SCCE_Deactivator {
 				array( '%d' )
 			);
 			
-		}
+		}*/
 		
 		// drop db tables on deactivation
 		//$wpdb->query( "DROP TABLE IF EXISTS " . $this->table_name );
