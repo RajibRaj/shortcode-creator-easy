@@ -261,6 +261,12 @@ class Shortcode_Creator_Easy {
 		 */
 		require_once SCCE_ABSPATH . 'admin/scce-created-shortcodes.php';
 		
+		/**
+		 * This is a php file where the plugin will write all the disabled shortcodes
+		 * created in the admin panel.
+		 */
+		require_once SCCE_ABSPATH . 'admin/scce-disabled-shortcodes.php';
+		
 		if ( is_admin() ) {
 			
 			// save the screen option setting
