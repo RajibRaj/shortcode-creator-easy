@@ -160,14 +160,22 @@ class SCCE_Admin {
 	
 	// the callback to display the all shortcode page
 	public function scce_view_all_shortcodes() {
-		// view page code will come here
-		require_once ( SCCE_ABSPATH . 'admin/views/scce-view-all-shortcodes.php' );
+		
+		if ( current_user_can( $this->capability ) ) {
+			// view page code will come here
+			require_once( SCCE_ABSPATH . 'admin/views/scce-view-all-shortcodes.php' );
+		}
+		
 	}
 	
 	// the callback to display the add-edit shortcode page
 	public function scce_add_edit_shortcode() {
-		// view page code will come here
-		require_once ( SCCE_ABSPATH . 'admin/views/scce-add-edit-shortcode.php' );
+		
+		if ( current_user_can( $this->capability ) ) {
+			// view page code will come here
+			require_once( SCCE_ABSPATH . 'admin/views/scce-add-edit-shortcode.php' );
+		}
+		
 	}
 	
 	/**
