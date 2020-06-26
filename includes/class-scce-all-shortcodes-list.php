@@ -45,8 +45,8 @@ class SCCE_Shortcode_List_Table extends WP_List_Table {
 		$this->table_name = $wpdb->scce_shortcodes;
 		
 		parent::__construct( [
-			'singular' => __( 'Shortcode', 'shortcode-creator-easy' ), //singular name of the listed records
-			'plural'   => __( 'Shortcodes', 'shortcode-creator-easy' ), //plural name of the listed records
+			'singular' => __( 'shortcode', 'shortcode-creator-easy' ), //singular name of the listed records
+			'plural'   => __( 'shortcodes', 'shortcode-creator-easy' ), //plural name of the listed records
 			'ajax'     => false //does this table support ajax?
 		] );
 		
@@ -259,6 +259,22 @@ class SCCE_Shortcode_List_Table extends WP_List_Table {
 			esc_url( $_delete_link ),
 			esc_html__( 'Delete', 'shortcode-creator-easy' ),
 			__( 'Are you sure to delete this shortcode?', 'shortcode-creator-easy' )
+		);
+		
+		// row action to change shortcode status
+		$link_text          = ( $item['scce_status'] === '1' ) ? __( 'Disable', 'shortcode-creator-easy' ) : __( 'Enable', 'shortcode-creator-easy' );
+		$_args_sts			= array(
+			'action'				=> 'scce-status',
+			'shortcode'				=> absint( $item['scce_id']),
+			'_wpnonce_actions_scl'	=> $_action_nonce,
+		);
+		wp_parse_str( $_SERVER['QUERY_STRING'], $defaults );
+		$_args_sts			    = wp_parse_args( $_args_sts,  $defaults );
+		$_status_change_link	= add_query_arg( $_args_dlt, admin_url( 'admin-ajax.php' ) );
+		$actions['change-status']	    = sprintf(
+			'<a href="%1$s">%2$s</a>',
+			esc_url( $_status_change_link ),
+			esc_html( $link_text )
 		);
 		
 		// output of the tag column content
