@@ -211,10 +211,9 @@ class SCCE_Form_Response {
 														'scce_output'		=> $db_scce_output, //$encoded_op
 														'scce_output_code'	=> htmlentities( $text ), //$encoded_op
 														'scce_function'		=> 'scce_shortcode_' . $fun_name_suffix,
-														'scce_status'		=> 1,
 													),
 													array( 'scce_id'		=> $shortcode->scce_id ),
-													array( '%s', '%s', '%s', '%s', '%s', '%s', '%d' ),
+													array( '%s', '%s', '%s', '%s', '%s', '%s' ),
 													array( '%d' )
 												);
 												
