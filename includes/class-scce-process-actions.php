@@ -63,6 +63,29 @@ class SCCE_Process_Actions {
 	}
 	
 	/**
+	 * Change status of the shortcode.
+	 *
+	 * @param int $id scce_id
+	 * @param int $status scce_status
+	 *
+	 * @return bool|false|int
+	 */
+	public function scce_update_status( $id, $status ) {
+		
+		global $wpdb;
+		
+		return $wpdb->update( $this->table_name,
+			array(
+				'scce_status'	=> $status,
+			),
+			array( 'scce_id' => $id ),
+			array( '%d' ),
+			array( '%d' )
+		);
+		
+	}
+	
+	/**
 	 * Remove stored shortcode from file
 	 *
 	 * @param string $code scce_output_code
@@ -195,7 +218,7 @@ class SCCE_Process_Actions {
 				$scce_id = ( isset( $_REQUEST[ 'shortcode' ] ) ) ? (int) $_REQUEST[ 'shortcode' ] : 0;
 			}
 			
-			if ( $scce_id ) {
+			if ( $scce_id && is_int( $scce_id ) ) {
 				
 				global $shortcode;
 				
@@ -216,6 +239,59 @@ class SCCE_Process_Actions {
 				scce_custom_redirect( esc_url_raw( wp_unslash( $_SERVER[ 'HTTP_REFERER' ] ) ) );
 				
 			}
+			
+		}
+		
+		// when status change action is triggered
+		if ( isset( $_REQUEST[ 'action' ] ) && $_REQUEST[ 'action' ] === 'scce-status' ) {
+			
+			// verify the nonce.
+			$nonce = esc_attr( $_REQUEST[ '_wpnonce_actions_scl' ] );
+			
+			if ( ! wp_verify_nonce( $nonce, 'scce_actions_scl' ) ) {
+				wp_die( __( 'Invalid nonce verification', 'shortcode-creator-easy' ), __( 'Error', 'shortcode-creator-easy' ), array(
+					'response' 	=> 403,
+					'back_link' => esc_url( wp_unslash( $_SERVER[ 'HTTP_REFERER' ] ) ),
+				) );
+			} else {
+				// get the shortcode ID
+				$scce_id = ( isset( $_REQUEST[ 'shortcode' ] ) ) ? (int) $_REQUEST[ 'shortcode' ] : 0;
+			}
+			
+			if ( $scce_id && is_int( $scce_id ) ) {
+				
+				// get the shortcode details
+				$shortcode = SCCE_DB_Table::scce_db_table_instance()->scce_get_shortcode_by_id( $scce_id );
+				
+				if ( empty( $shortcode ) ) {
+					
+					SCCE_Notices::scce_notice_instance()->scce_add_notice( __( 'No shortcode found', 'shortcode-creator-easy' ), 'error' );
+					
+					scce_custom_redirect( esc_url_raw( wp_unslash( $_SERVER[ 'HTTP_REFERER' ] ) ) );
+					
+				}
+				
+				$status = ( (int)$shortcode->scce_status === 1 ) ? 0 : 1;
+				
+				// update status
+				$result = $this->scce_update_status( absint( $scce_id ), $status );
+				
+				$message = ( $result ) ? __( 'The status changed successfully', 'shortcode-creator-easy' ) : __( 'The status is not changed successfully', 'shortcode-creator-easy' );
+				$msg_type = ( $result ) ? 'success' : 'error';
+					
+				SCCE_Notices::scce_notice_instance()->scce_add_notice( $message, $msg_type );
+				
+				scce_custom_redirect( esc_url_raw( wp_unslash( $_SERVER[ 'HTTP_REFERER' ] ) ) );
+				
+			} else {
+				
+				SCCE_Notices::scce_notice_instance()->scce_add_notice( __( 'Invalid ID or no item selected', 'shortcode-creator-easy' ), 'error' );
+				
+				scce_custom_redirect( esc_url_raw( wp_unslash( $_SERVER[ 'HTTP_REFERER' ] ) ) );
+				
+			}
+			
+			
 			
 		}
 		
