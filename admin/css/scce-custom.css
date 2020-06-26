@@ -21,7 +21,11 @@
 /*----------*/
 
 /*--scce atts list table--*/
-/*#scce-atts-list table{ width: 100% }*/
+#scce-atts-list table{
+	border: 1px solid #7e8993;
+	border-radius: 4px;
+	overflow: hidden;
+}
 #scce-atts-list table th,
 #scce-atts-list table td {
 	padding: 7px 10px 7px 10px;
@@ -36,6 +40,7 @@
 /*--scce atts add or remove button--*/
 #scce-atts-list button{
 	margin-left: 3px;
+	transition: 0.4s;
 }
 .scce-addremove-atts button.scce-addmore-atts-btn:hover,
 .scce-addremove-atts button.scce-addmore-atts-btn:focus,
@@ -68,7 +73,15 @@
 /*----------*/
 
 /*--submit button--*/
-#scce-add-edit-sc .submit .button:hover {
+.all-shortcode .page-title-action{
+	vertical-align: baseline;
+}
+#scce-add-edit-sc .button,
+.all-shortcode .button {
+	transition: 0.5s;
+}
+#scce-add-edit-sc .button:hover,
+.all-shortcode .button:hover{
 	color: #f3f5f6;
 	background: #0071a1;
 }
@@ -76,7 +89,7 @@
 
 /*--scce CodeMirror--*/
 #scce-add-edit-sc .CodeMirror {
-	border: 1px solid #ddd;
+	border: 1px solid #7e8993;
 	border-radius: 4px;
 }
 #scce-add-edit-sc .CodeMirror-focused {
