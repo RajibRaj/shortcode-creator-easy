@@ -283,7 +283,8 @@ class Shortcode_Creator_Easy {
 				if ( ( isset( $_GET[ 'action' ] ) && $_GET[ 'action' ] === 'scce-delete' )
 					|| ( isset( $_POST[ 'action' ] ) && $_POST[ 'action' ] === 'bulk-delete' )
 					|| ( isset( $_POST[ 'action2' ] ) && $_POST[ 'action2' ] === 'bulk-delete' )
-					|| ( isset( $_REQUEST[ 'action' ] ) && $_REQUEST[ 'action' ] === 'scce-edit' ) ) {
+					|| ( isset( $_REQUEST[ 'action' ] ) && $_REQUEST[ 'action' ] === 'scce-edit' )
+				     || ( isset( $_GET[ 'action' ] ) && $_REQUEST[ 'action' ] === 'scce-status' ) ) {
 					
 					$process_action = new SCCE_Process_Actions();
 					$process_action->scce_process_actions_fn();
