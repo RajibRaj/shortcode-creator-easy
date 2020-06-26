@@ -102,14 +102,3 @@ if ( ! function_exists( "scce_shortcode_youtube_video" ) ) {
 		<?php return ob_get_clean();
 	}
 }
-add_shortcode( "test-code-7", "scce_shortcode_test_code_7" );
-if ( ! function_exists( "scce_shortcode_test_code_7" ) ) {
-	function scce_shortcode_test_code_7( $params, $content = null ) {
-		$scce_sc_atts = shortcode_atts( array(
-			"class" => "test-cls",
-		), $params );
-		ob_start(); ?>
-		<span class="<?php echo $scce_sc_atts[ "class" ]; ?>"><?php echo do_shortcode( $content ); ?></span>
-		<?php return ob_get_clean();
-	}
-}
