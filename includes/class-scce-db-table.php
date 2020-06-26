@@ -98,7 +98,7 @@ class SCCE_DB_Table {
 			`scce_output` longtext NOT NULL,
 			`scce_output_code` longtext NOT NULL,
 			`scce_function` varchar(255) NOT NULL,
-			`scce_status` enum('1','0') NOT NULL DEFAULT '1',
+			`scce_status`  tinyint(1) DEFAULT 1,
 			`scce_created` datetime NOT NULL,
 			`scce_updated` datetime DEFAULT current_timestamp() ON UPDATE current_timestamp(),
 			PRIMARY KEY (`scce_id`)
