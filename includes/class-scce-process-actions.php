@@ -108,6 +108,37 @@ class SCCE_Process_Actions {
 		}
 		
 	}
+	
+	/**
+	 * Change status using the file
+	 *
+	 * @param string $code scce_output_code
+	 */
+	public function scce_disable_enable_shortcode( $tag, $status ) {
+		
+		$disabled_shortcode	= SCCE_ABSPATH . 'admin/scce-disabled-shortcodes.php';
+		
+		if ( @file_exists( $disabled_shortcode ) ) {
+			
+			// get the current content in the file
+			$current_content = @file_get_contents( $disabled_shortcode );
+			
+			$code = 'add_action( "' . $tag . '", "__return_false" );';
+			
+			if ( (int)$status === 1 ) {
+				// remove the code for the deleted shortcode
+				$new_content = str_replace( $code . "\n", '', $current_content );
+			} else {
+				// add disable code
+				$new_content = $current_content . $code . "\n";
+			}
+			
+			// save the file
+			@file_put_contents( $disabled_shortcode, $new_content );
+			
+		}
+		
+	}
 
 	public function scce_process_actions_fn() {
 		
@@ -275,6 +306,9 @@ class SCCE_Process_Actions {
 				
 				// update status
 				$result = $this->scce_update_status( absint( $scce_id ), $status );
+				
+				// change status in file
+				if ( $result ) $this->scce_disable_enable_shortcode( $shortcode->scce_tag, (int)$status );
 				
 				$message = ( $result ) ? __( 'The status changed successfully', 'shortcode-creator-easy' ) : __( 'The status is not changed successfully', 'shortcode-creator-easy' );
 				$msg_type = ( $result ) ? 'success' : 'error';
