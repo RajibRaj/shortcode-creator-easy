@@ -49,5 +49,3 @@ function scce_start() {
 }
 
 scce_start();
-
-// test again
