@@ -42,10 +42,10 @@ require SCCE_ABSPATH . 'includes/class-shortcode-creator-easy.php';
  * Begins execution of the plugin.
  */
 function scce_start() {
-	
+
 	$plugin = new Shortcode_Creator_Easy();
 	$plugin->scce_start_main();
-	
+
 }
 
 scce_start();
