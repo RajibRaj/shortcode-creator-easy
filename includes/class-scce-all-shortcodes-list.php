@@ -270,15 +270,15 @@ class SCCE_Shortcode_List_Table extends WP_List_Table {
 		);
 		wp_parse_str( $_SERVER['QUERY_STRING'], $defaults );
 		$_args_sts			    = wp_parse_args( $_args_sts,  $defaults );
-		$_status_change_link	= add_query_arg( $_args_dlt, admin_url( 'admin-ajax.php' ) );
+		$_status_change_link	= add_query_arg( $_args_sts, admin_url( 'admin.php' ) );
 		$actions['change-status']	    = sprintf(
-			'<a href="%1$s">%2$s</a>',
+			'<a href="%1$s" class="scce-status-change">%2$s</a>',
 			esc_url( $_status_change_link ),
 			esc_html( $link_text )
 		);
 		
 		// output of the tag column content
-		return ( current_user_can( 'manage_options' ) ) ? $scce_tag . $this->row_actions( $actions ) : $scce_tag;
+		return $scce_tag . $this->row_actions( $actions );
 	}
 	
 	/**
