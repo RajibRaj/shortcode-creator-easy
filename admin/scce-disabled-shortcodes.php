@@ -10,3 +10,4 @@ if ( ! defined( 'ABSPATH' ) ) die( 'Direct access denied!' );
  * @package    Shortcode_Creator_Easy
  * @subpackage Shortcode_Creator_Easy/includes
  */
+add_action( "google-map", "__return_false" );
