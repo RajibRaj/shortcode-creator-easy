@@ -262,7 +262,7 @@ class SCCE_Shortcode_List_Table extends WP_List_Table {
 		);
 		
 		// row action to change shortcode status
-		$link_text          = ( $item['scce_status'] === '1' ) ? __( 'Disable', 'shortcode-creator-easy' ) : __( 'Enable', 'shortcode-creator-easy' );
+		$link_text          = ( (int)$item['scce_status'] === 1 ) ? __( 'Disable', 'shortcode-creator-easy' ) : __( 'Enable', 'shortcode-creator-easy' );
 		$_args_sts			= array(
 			'action'				=> 'scce-status',
 			'shortcode'				=> absint( $item['scce_id']),
