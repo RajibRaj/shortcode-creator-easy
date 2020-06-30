@@ -1,19 +1,19 @@
 /*--form field elements--*/
-#scce-add-edit-sc .form-field input[type=email],
-#scce-add-edit-sc .form-field input[type=number],
-#scce-add-edit-sc .form-field input[type=password],
-#scce-add-edit-sc .form-field input[type=search],
-#scce-add-edit-sc .form-field input[type=tel],
-#scce-add-edit-sc .form-field input[type=text],
-#scce-add-edit-sc .form-field input[type=url],
-#scce-add-edit-sc .form-field textarea {
+.scce-add-edit-sc .form-field input[type=email],
+.scce-add-edit-sc .form-field input[type=number],
+.scce-add-edit-sc .form-field input[type=password],
+.scce-add-edit-sc .form-field input[type=search],
+.scce-add-edit-sc .form-field input[type=tel],
+.scce-add-edit-sc .form-field input[type=text],
+.scce-add-edit-sc .form-field input[type=url],
+.scce-add-edit-sc .form-field textarea {
 	width: 100%;
 }
-/*#scce-add-edit-sc .description { display: block; }*/
+/*.scce-add-edit-sc .description { display: block; }*/
 /*----------*/
 
 /*--form error display--*/
-#scce-add-edit-sc span.error { color: red; }
+.scce-add-edit-sc span.error { color: red; }
 .scce-invalid {
 	border-color: #dc3232 !important;
 	box-shadow: 0 0 2px rgba(204,0,0,.8) !important;
@@ -37,6 +37,21 @@
 }
 /*----------*/
 
+/*--submit button--*/
+.all-shortcode .page-title-action{
+	vertical-align: baseline;
+}
+.scce-add-edit-sc .button,
+.all-shortcode .button {
+	transition: 0.5s;
+}
+.scce-add-edit-sc .button:hover,
+.all-shortcode .button:hover{
+	background-color: #0071a1;
+	color: #f3f5f6;
+}
+/*----------*/
+
 /*--scce atts add or remove button--*/
 #scce-atts-list button{
 	margin-left: 3px;
@@ -53,7 +68,7 @@
 .scce-addremove-atts button.scce-remove-atts-btn:active {
 	background-color: #FF0000;
 	border-color: #FF0000;
-	color:#ffffff;
+	color:#f3f5f6;
 	box-shadow: 0 0 0 1px #FF0000;
 }
 .scce-addremove-atts button.scce-remove-atts-btn:hover,
@@ -72,27 +87,12 @@
 }
 /*----------*/
 
-/*--submit button--*/
-.all-shortcode .page-title-action{
-	vertical-align: baseline;
-}
-#scce-add-edit-sc .button,
-.all-shortcode .button {
-	transition: 0.5s;
-}
-#scce-add-edit-sc .button:hover,
-.all-shortcode .button:hover{
-	color: #f3f5f6;
-	background: #0071a1;
-}
-/*----------*/
-
 /*--scce CodeMirror--*/
-#scce-add-edit-sc .CodeMirror {
+.scce-add-edit-sc .CodeMirror {
 	border: 1px solid #7e8993;
 	border-radius: 4px;
 }
-#scce-add-edit-sc .CodeMirror-focused {
+.scce-add-edit-sc .CodeMirror-focused {
 	border-color: #007cba;
 	box-shadow: 0 0 0 1px #007cba;
 	outline: 2px solid transparent;
