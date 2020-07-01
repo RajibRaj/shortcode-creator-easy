@@ -308,7 +308,7 @@ class Shortcode_Creator_Easy {
 		
 		$current_screen = get_current_screen();
 		
-		if ( in_array( $current_screen->id, $menu_hooks ) ) {
+		if ( isset( $menu_hooks ) && in_array( $current_screen->id, $menu_hooks ) ) {
 			
 			// change the footer text in the admin area
 			add_filter( 'admin_footer_text', array( $this, 'scce_admin_footer_text' ), 11 );
