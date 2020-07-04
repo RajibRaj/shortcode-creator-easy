@@ -14,26 +14,48 @@
 
 /*--form error display--*/
 .scce-add-edit-sc span.error { color: red; }
-.scce-invalid {
+.scce-add-edit-sc .scce-invalid {
 	border-color: #dc3232 !important;
 	box-shadow: 0 0 2px rgba(204,0,0,.8) !important;
 }
 /*----------*/
 
-/*--scce atts list table--*/
-#scce-atts-list table{
-	border: 1px solid #7e8993;
-	border-radius: 4px;
-	overflow: hidden;
+/*--shortcode list table--*/
+.scce-copy-text{
+	display: inline-block;
+	padding: 5px 8px;
+	background-color: #dedede;
+	border-radius: 3px;
+	position: relative;
 }
-#scce-atts-list table th,
-#scce-atts-list table td {
-	padding: 7px 10px 7px 10px;
+.scce-copy-text .tooltip-text {
+	visibility: hidden;
+	width: 150px;
+	background-color: #808080;
+	color: #e0e0e0;
+	text-align: center;
+	border-radius: 6px;
+	margin-left: 5px;
+	padding: 5px 0;
+	position: absolute;
+	z-index: 2;
+	top: 0;
+	left: 100%;
 }
-@media screen and (max-width: 782px) {
-	#scce-atts-list table thead th.column-primary {
-		box-sizing: border-box;
-	}
+
+.scce-copy-text .tooltip-text::after {
+	content: "";
+	position: absolute;
+	top: 50%;
+	right: 100%;
+	margin-top: -5px;
+	border-width: 5px;
+	border-style: solid;
+	border-color: transparent #808080 transparent transparent;
+}
+
+.scce-copy-text:hover .tooltip-text {
+	visibility: visible;
 }
 /*----------*/
 
@@ -49,6 +71,23 @@
 .all-shortcode .button:hover{
 	background-color: #0071a1;
 	color: #f3f5f6;
+}
+/*----------*/
+
+/*--scce atts inputs table--*/
+#scce-atts-list table{
+	border: 1px solid #7e8993;
+	border-radius: 4px;
+	overflow: hidden;
+}
+#scce-atts-list table th,
+#scce-atts-list table td {
+	padding: 7px 10px 7px 10px;
+}
+@media screen and (max-width: 782px) {
+	#scce-atts-list table thead th.column-primary {
+		box-sizing: border-box;
+	}
 }
 /*----------*/
 
