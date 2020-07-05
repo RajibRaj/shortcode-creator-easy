@@ -39,8 +39,10 @@ class SCCE_Process_Actions {
 	 * @since    1.0.0
 	 */
 	public function __construct() {
+		
 		global $wpdb;
 		$this->table_name		= $wpdb->scce_shortcodes;
+		
 	}
 	
 	/**
@@ -112,7 +114,8 @@ class SCCE_Process_Actions {
 	/**
 	 * Change status using the file
 	 *
-	 * @param string $code scce_output_code
+	 * @param string $tag scce_tag
+	 * @param string $status scce_status
 	 */
 	public function scce_disable_enable_shortcode( $tag, $status ) {
 		
@@ -125,13 +128,8 @@ class SCCE_Process_Actions {
 			
 			$code = 'add_action( "' . $tag . '", "__return_false" );';
 			
-			if ( (int)$status === 1 ) {
-				// remove the code for the deleted shortcode
-				$new_content = str_replace( $code . "\n", '', $current_content );
-			} else {
-				// add disable code
-				$new_content = $current_content . $code . "\n";
-			}
+			// update the content of disabled shortcode file
+			$new_content = ( (int)$status === 1 ) ? str_replace( $code . "\n", '', $current_content ) : $current_content . $code . "\n";
 			
 			// save the file
 			@file_put_contents( $disabled_shortcode, $new_content );
@@ -139,33 +137,147 @@ class SCCE_Process_Actions {
 		}
 		
 	}
-
+	
+	/**
+	 * Function to process the actions
+	 */
 	public function scce_process_actions_fn() {
 		
-		if ( ( isset( $_GET[ 'action' ] ) && $_GET[ 'action' ] == 'scce-delete' )
-			|| ( isset( $_POST[ 'action' ] ) && $_POST[ 'action' ] == 'bulk-delete' )
-			|| ( isset( $_POST[ 'action2' ] ) && $_POST[ 'action2' ] == 'bulk-delete' ) ) {
+		// for safety recheck
+		if ( ( ! isset( $_GET[ 'action' ] ) || $_GET[ 'action' ] !== 'scce-delete' )
+		     && ( ! isset( $_POST[ 'action' ] ) || $_POST[ 'action' ] !== 'bulk-delete' )
+		     && ( ! isset( $_POST[ 'action2' ] ) || $_POST[ 'action2' ] !== 'bulk-delete' )
+		     && ( ! isset( $_REQUEST[ 'action' ] ) || $_REQUEST[ 'action' ] !== 'scce-edit' )
+		     && ( ! isset( $_GET[ 'action' ] ) || $_REQUEST[ 'action' ] !== 'scce-status' ) ) {
 			
-			$count = 0;
+			SCCE_Notices::scce_notice_instance()->scce_add_notice( __( 'Invalid action', 'shortcode-creator-easy' ), 'error' );
+			scce_custom_redirect( esc_url_raw( wp_unslash( $_SERVER[ 'HTTP_REFERER' ] ) ) );
+		}
+		
+		// validate nonce
+		$_nonce = $_action = '';
+		if ( isset( $_REQUEST[ '_wpnonce_actions_scl' ] ) ) {
 			
-			// when item delete action is being triggered
-			if ( isset( $_GET[ 'action' ] ) && 'scce-delete' === $_REQUEST[ 'action' ] ) {
+			$_nonce      = scce_sanitize_deep( $_REQUEST[ '_wpnonce_actions_scl' ] );
+			$_action     = 'scce_actions_scl';
+			
+		} elseif ( isset( $_REQUEST[ '_wpnonce' ] ) ) {
+			
+			$_nonce      = scce_sanitize_deep( $_REQUEST[ '_wpnonce' ] );
+			$_action     = 'bulk-' . sanitize_key( 'shortcodes' );
+			
+		}
+		if ( empty( $_nonce ) || empty( $_action ) || ! wp_verify_nonce( $_nonce, $_action ) ) {
+			wp_die( __( 'Invalid nonce verification', 'shortcode-creator-easy' ), __( 'Error', 'shortcode-creator-easy' ), array(
+				'response' => 403,
+				'back_link' => esc_url( wp_unslash( $_SERVER[ 'HTTP_REFERER' ] ) ),
+			) );
+		}
+		
+		// check for shortcode id(s)
+		if ( ! isset( $_REQUEST[ 'shortcode' ] ) && ! isset( $_REQUEST[ 'bulk-ids' ] ) ) {
+			
+			SCCE_Notices::scce_notice_instance()->scce_add_notice( __( 'Invalid ID or no item(s) selected', 'shortcode-creator-easy' ), 'error' );
+			scce_custom_redirect( esc_url_raw( wp_unslash( $_SERVER[ 'HTTP_REFERER' ] ) ) );
+			
+		}
+		
+		$count = 0;
+		
+		// for single item actions
+		if ( isset( $_REQUEST[ 'shortcode' ] ) && ! empty( $_REQUEST[ 'shortcode' ] ) ) {
+			
+			$scce_id = scce_sanitize_deep( $_REQUEST[ 'shortcode' ] );
+			
+			if ( isset( $scce_id ) && ! empty( $scce_id ) ) {
 				
-				// verify the nonce.
-				$nonce = esc_attr( $_REQUEST[ '_wpnonce_actions_scl' ] );
+				// get the shortcode details
+				$sc_data = SCCE_DB_Table::scce_db_table_instance()->scce_get_shortcode_by_id( absint( $scce_id ) );
 				
-				if ( ! wp_verify_nonce( $nonce, 'scce_actions_scl' ) ) {
-					wp_die( __( 'Invalid nonce verification', 'shortcode-creator-easy' ), __( 'Error', 'shortcode-creator-easy' ), array(
-						'response' => 403,
-						'back_link' => esc_url( wp_unslash( $_SERVER[ 'HTTP_REFERER' ] ) ),
-					) );
-				} else {
+				// if no shortcode found then redirect
+				if ( empty( $sc_data ) ) {
 					
-					// get the shortcode details
-					$sc_data = SCCE_DB_Table::scce_db_table_instance()->scce_get_shortcode_by_id( absint( $_GET[ 'shortcode' ] ) );
+					SCCE_Notices::scce_notice_instance()->scce_add_notice( __( 'No shortcode found', 'shortcode-creator-easy' ), 'error' );
+					scce_custom_redirect( esc_url_raw( wp_unslash( $_SERVER[ 'HTTP_REFERER' ] ) ) );
+					
+				}
+				
+				/*--when delete item action is triggered--*/
+				if ( isset( $_GET[ 'action' ] ) && $_GET[ 'action' ] === 'scce-delete' ) {
 					
 					// delete the shortcode
-					$result = $this->scce_delete_shortcode( absint( $_GET[ 'shortcode' ] ) );
+					$result = $this->scce_delete_shortcode( absint( $scce_id ) );
+					
+					// remove shortcode from file
+					if ( $result ) $this->scce_remove_stored_code( $sc_data->scce_output_code );
+					
+					$message        = ( $result ) ? __( 'One shortcode deleted', 'shortcode-creator-easy' ) : __( 'No shortcode deleted', 'shortcode-creator-easy' );
+					$message_type   = ( $result ) ? 'success' : 'error';
+					
+					SCCE_Notices::scce_notice_instance()->scce_add_notice( $message, $message_type );
+					scce_custom_redirect( esc_url_raw( wp_unslash( $_SERVER[ 'HTTP_REFERER' ] ) ) );
+					exit();
+					
+				}
+				
+				/*--when edit item action is triggered--*/
+				if ( isset( $_REQUEST[ 'action' ] ) && $_REQUEST[ 'action' ] === 'scce-edit' ) {
+					
+					// create a global variable for the shortcode to get the information at the add edit page
+					global $shortcode;
+					$shortcode = $sc_data;
+					
+					// after validation it will automatically redirect to the add-edit page
+					SCCE_Notices::scce_notice_instance()->scce_add_notice( sprintf( __( 'You are about to edit the shortcode with id %d', 'shortcode-creator-easy' ), $scce_id ), 'warning' );
+					
+				}
+				
+				/*--when status change action is triggered--*/
+				if ( isset( $_REQUEST[ 'action' ] ) && $_REQUEST[ 'action' ] === 'scce-status' ) {
+					$status = ( (int)$sc_data->scce_status === 1 ) ? 0 : 1;
+					
+					// update status
+					$result = $this->scce_update_status( absint( $scce_id ), $status );
+					
+					// change status in file
+					if ( $result ) $this->scce_disable_enable_shortcode( $sc_data->scce_tag, (int)$status );
+					
+					$message        = ( $result ) ? __( 'The status changed successfully', 'shortcode-creator-easy' ) : __( 'The status is not changed successfully', 'shortcode-creator-easy' );
+					$message_type   = ( $result ) ? 'success' : 'error';
+					
+					SCCE_Notices::scce_notice_instance()->scce_add_notice( $message, $message_type );
+					scce_custom_redirect( esc_url_raw( wp_unslash( $_SERVER[ 'HTTP_REFERER' ] ) ) );
+					
+					exit();
+					
+				}
+				
+			} else {
+				
+				SCCE_Notices::scce_notice_instance()->scce_add_notice( __( 'Invalid ID or no item selected', 'shortcode-creator-easy' ), 'error' );
+				scce_custom_redirect( esc_url_raw( wp_unslash( $_SERVER[ 'HTTP_REFERER' ] ) ) );
+				
+				exit();
+				
+			}
+		}
+		
+		// for bulk actions
+		if ( isset( $_REQUEST[ 'bulk-ids' ] ) && ! empty( $_REQUEST[ 'bulk-ids' ] ) ) {
+			
+			$scce_ids = scce_sanitize_deep( $_REQUEST[ 'bulk-ids' ] );
+			
+			if ( ( isset( $_REQUEST[ 'action' ] ) && $_REQUEST[ 'action' ] === 'bulk-delete' )
+			     || ( isset( $_REQUEST[ 'action2' ] ) && $_REQUEST[ 'action2' ] === 'bulk-delete' ) ) {
+				
+				// loop over the array of record IDs and delete them
+				foreach ( $scce_ids as $scce_id ) {
+					
+					// get the shortcode details
+					$sc_data = SCCE_DB_Table::scce_db_table_instance()->scce_get_shortcode_by_id( $scce_id );
+					
+					// delete the shortcode
+					$result = $this->scce_delete_shortcode( $scce_id );
 					
 					// remove shortcode from file
 					if ( $result ) $this->scce_remove_stored_code( $sc_data->scce_output_code );
@@ -174,158 +286,15 @@ class SCCE_Process_Actions {
 					
 				}
 				
-			}
-			
-			// when the bulk delete action is triggered
-			if ( ( isset( $_POST[ 'action' ] ) && $_POST[ 'action' ] === 'bulk-delete' )
-				|| ( isset( $_POST[ 'action2' ] ) && $_POST[ 'action2' ] === 'bulk-delete' ) ) {
+				$message      = ( $count ) ? sprintf( _n( '%s shortcode permanently deleted', '%s shortcodes permanently deleted', $count, 'shortcode-creator-easy' ), number_format_i18n( $count ) ) : __( 'No shortcode deleted', 'shortcode-creator-easy' );
+				$message_type = ( $count ) ? 'success' : 'error';
 				
-				$nonce = esc_attr( $_REQUEST[ '_wpnonce' ] );
-				
-				if ( ! wp_verify_nonce( $nonce, 'bulk-' . sanitize_key( 'Shortcodes' ) ) ) {
-					wp_die( __( 'Invalid nonce verification', 'shortcode-creator-easy' ), __( 'Error', 'shortcode-creator-easy' ), array(
-						'response' => 403,
-						'back_link' => esc_url( wp_unslash( $_SERVER[ 'HTTP_REFERER' ] ) ),
-					) );
-				} else {
-					
-					$delete_ids = esc_sql( $_POST[ 'bulk-ids' ] );
-					
-					// loop over the array of record IDs and delete them
-					foreach ( $delete_ids as $id ) {
-						
-						// get the shortcode details
-						$sc_data = SCCE_DB_Table::scce_db_table_instance()->scce_get_shortcode_by_id( $id );
-						
-						// delete the shortcode
-						$result = $this->scce_delete_shortcode( $id );
-						
-						// remove shortcode from file
-						if ( $result ) $this->scce_remove_stored_code( $sc_data->scce_output_code );
-						
-						$count += ( $result ) ? 1 : 0;
-						
-					}
-					
-				}
-				
-			}
-			
-			// save the action message as notice
-			if ( $count > 0 ) {
-				
-				$message = sprintf(
-					_n( '%s shortcode permanently deleted', '%s shortcodes permanently deleted', $count, 'shortcode-creaetor-easy' ),
-					number_format_i18n( $count )
-				);
-				
-				SCCE_Notices::scce_notice_instance()->scce_add_notice( $message, 'success' );
-				
-			} else {
-				
-				SCCE_Notices::scce_notice_instance()->scce_add_notice( 'No shortcode deleted', 'success' );
-				
-			}
-			
-			// redirect after processing the delete action
-			scce_custom_redirect( esc_url_raw( wp_unslash( $_SERVER[ 'HTTP_REFERER' ] ) ) );
-			exit;
-			
-		}
-		
-		// when item edit action is triggered
-		if ( isset( $_REQUEST[ 'action' ] ) && $_REQUEST[ 'action' ] === 'scce-edit' ) {
-			
-			// verify the nonce.
-			$nonce = esc_attr( $_REQUEST[ '_wpnonce_actions_scl' ] );
-			
-			if ( ! wp_verify_nonce( $nonce, 'scce_actions_scl' ) ) {
-				wp_die( __( 'Invalid nonce verification', 'shortcode-creator-easy' ), __( 'Error', 'shortcode-creator-easy' ), array(
-					'response' 	=> 403,
-					'back_link' => esc_url( wp_unslash( $_SERVER[ 'HTTP_REFERER' ] ) ),
-				) );
-			} else {
-				// get the shortcode ID
-				$scce_id = ( isset( $_REQUEST[ 'shortcode' ] ) ) ? (int) $_REQUEST[ 'shortcode' ] : 0;
-			}
-			
-			if ( $scce_id && is_int( $scce_id ) ) {
-				
-				global $shortcode;
-				
-				$shortcode = SCCE_DB_Table::scce_db_table_instance()->scce_get_shortcode_by_id( $scce_id );
-				
-				if ( empty( $shortcode ) ) {
-					
-					SCCE_Notices::scce_notice_instance()->scce_add_notice( __( 'No shortcode found', 'shortcode-creator-easy' ), 'error' );
-					
-					scce_custom_redirect( esc_url_raw( wp_unslash( $_SERVER[ 'HTTP_REFERER' ] ) ) );
-					
-				}
-				
-			} else {
-				
-				SCCE_Notices::scce_notice_instance()->scce_add_notice( __( 'Invalid ID or no item selected', 'shortcode-creator-easy' ), 'error' );
-				
+				SCCE_Notices::scce_notice_instance()->scce_add_notice( $message, $message_type );
 				scce_custom_redirect( esc_url_raw( wp_unslash( $_SERVER[ 'HTTP_REFERER' ] ) ) );
 				
-			}
-			
-		}
-		
-		// when status change action is triggered
-		if ( isset( $_REQUEST[ 'action' ] ) && $_REQUEST[ 'action' ] === 'scce-status' ) {
-			
-			// verify the nonce.
-			$nonce = esc_attr( $_REQUEST[ '_wpnonce_actions_scl' ] );
-			
-			if ( ! wp_verify_nonce( $nonce, 'scce_actions_scl' ) ) {
-				wp_die( __( 'Invalid nonce verification', 'shortcode-creator-easy' ), __( 'Error', 'shortcode-creator-easy' ), array(
-					'response' 	=> 403,
-					'back_link' => esc_url( wp_unslash( $_SERVER[ 'HTTP_REFERER' ] ) ),
-				) );
-			} else {
-				// get the shortcode ID
-				$scce_id = ( isset( $_REQUEST[ 'shortcode' ] ) ) ? (int) $_REQUEST[ 'shortcode' ] : 0;
-			}
-			
-			if ( $scce_id && is_int( $scce_id ) ) {
-				
-				// get the shortcode details
-				$shortcode = SCCE_DB_Table::scce_db_table_instance()->scce_get_shortcode_by_id( $scce_id );
-				
-				if ( empty( $shortcode ) ) {
-					
-					SCCE_Notices::scce_notice_instance()->scce_add_notice( __( 'No shortcode found', 'shortcode-creator-easy' ), 'error' );
-					
-					scce_custom_redirect( esc_url_raw( wp_unslash( $_SERVER[ 'HTTP_REFERER' ] ) ) );
-					
-				}
-				
-				$status = ( (int)$shortcode->scce_status === 1 ) ? 0 : 1;
-				
-				// update status
-				$result = $this->scce_update_status( absint( $scce_id ), $status );
-				
-				// change status in file
-				if ( $result ) $this->scce_disable_enable_shortcode( $shortcode->scce_tag, (int)$status );
-				
-				$message = ( $result ) ? __( 'The status changed successfully', 'shortcode-creator-easy' ) : __( 'The status is not changed successfully', 'shortcode-creator-easy' );
-				$msg_type = ( $result ) ? 'success' : 'error';
-					
-				SCCE_Notices::scce_notice_instance()->scce_add_notice( $message, $msg_type );
-				
-				scce_custom_redirect( esc_url_raw( wp_unslash( $_SERVER[ 'HTTP_REFERER' ] ) ) );
-				
-			} else {
-				
-				SCCE_Notices::scce_notice_instance()->scce_add_notice( __( 'Invalid ID or no item selected', 'shortcode-creator-easy' ), 'error' );
-				
-				scce_custom_redirect( esc_url_raw( wp_unslash( $_SERVER[ 'HTTP_REFERER' ] ) ) );
+				exit();
 				
 			}
-			
-			
 			
 		}
 		
