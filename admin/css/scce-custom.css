@@ -28,34 +28,42 @@
 	border-radius: 3px;
 	position: relative;
 }
-.scce-copy-text .tooltip-text {
-	visibility: hidden;
-	width: 150px;
-	background-color: #808080;
-	color: #e0e0e0;
-	text-align: center;
-	border-radius: 6px;
-	margin-left: 5px;
-	padding: 5px 0;
+.scce-copy-text::before,
+.scce-copy-text::after {
+	--scale: 0;
+	--tooltip-color: #808080;
+	--arrow-size: 10px;
+	
 	position: absolute;
-	z-index: 2;
 	top: 0;
-	left: 100%;
+	left: 50%;
+	color: #ebebeb;
+	transform: translateX(-50%) translateY(var(--translate-y, 0)) scale(var(--scale));
+	transition: 400ms transform;
+	transform-origin: bottom center;
+	z-index: 1;
 }
-
-.scce-copy-text .tooltip-text::after {
-	content: "";
-	position: absolute;
-	top: 50%;
-	right: 100%;
-	margin-top: -5px;
-	border-width: 5px;
-	border-style: solid;
-	border-color: transparent #808080 transparent transparent;
+.scce-copy-text::before {
+	--translate-y: calc(-100% - var(--arrow-size));
+	
+	content: attr(data-tooltip);
+	padding: 5px 10px;
+	border-radius: 5px;
+	text-align: center;
+	width: max-content;
+	background: var(--tooltip-color);
 }
-
-.scce-copy-text:hover .tooltip-text {
-	visibility: visible;
+.scce-copy-text:hover::before,
+.scce-copy-text:hover::after {
+	--scale: 1;
+}
+.scce-copy-text::after {
+	--translate-y: calc(-1.1 * var(--arrow-size));
+	
+	content: '';
+	border: var(--arrow-size) solid transparent;
+	border-top-color: var(--tooltip-color);
+	transform-origin: top center;
 }
 /*----------*/
 
@@ -83,11 +91,6 @@
 #scce-atts-list table th,
 #scce-atts-list table td {
 	padding: 7px 10px 7px 10px;
-}
-@media screen and (max-width: 782px) {
-	#scce-atts-list table thead th.column-primary {
-		box-sizing: border-box;
-	}
 }
 /*----------*/
 
@@ -135,5 +138,19 @@
 	border-color: #007cba;
 	box-shadow: 0 0 0 1px #007cba;
 	outline: 2px solid transparent;
+}
+/*----------*/
+
+/*--responsive design--*/
+@media screen and (max-width: 782px) {
+	#scce-atts-list table thead th.column-primary {
+		box-sizing: border-box;
+	}
+	
+	/*hide tooltip on mobile devices*/
+	.scce-copy-text:hover::before,
+	.scce-copy-text:hover::after {
+		--scale: 0;
+	}
 }
 /*----------*/
