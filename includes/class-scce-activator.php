@@ -39,7 +39,6 @@ class SCCE_Activator {
 	public function __construct() {
 		
 		global $wpdb;
-		
 		$this->table_name = $wpdb->scce_shortcodes;
 		
 	}
@@ -54,30 +53,12 @@ class SCCE_Activator {
 		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
 		
 		// create db tables on activation
-		if ( $wpdb->get_var( "SHOW TABLES LIKE '" . $this->table_name . "'" ) != $this->table_name ) {
+		if ( $wpdb->get_var( "SHOW TABLES LIKE '" . $this->table_name . "'" ) !== $this->table_name ) {
 			
 			// get the table create queries
 			$table_structures	= SCCE_DB_Table::scce_db_table_instance()->scce_tables_structure();
 			
 			dbDelta( $table_structures['scce_shortcodes'] );
-			
-		} else {
-			
-			// enable all the shortcodes by changing the status to 1 to the db
-			/*$all_shortcodes = SCCE_DB_Table::scce_db_table_instance()->scce_get_shortcode();
-			
-			foreach ( $all_shortcodes as $shortcode ) {
-				
-				$result = $wpdb->update( $this->table_name,
-					array(
-						'scce_status' => 1,
-					),
-					array( 'scce_id' => $shortcode->scce_id ),
-					array( '%s' ),
-					array( '%d' )
-				);
-				
-			}*/
 			
 		}
 		
