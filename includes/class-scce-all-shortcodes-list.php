@@ -157,13 +157,16 @@ class SCCE_Shortcode_List_Table extends WP_List_Table {
 	public function column_default( $item, $column_name ) {
 		
 		switch ( $column_name ) {
+			
 			case 'scce_enclosing' :
 				return $item[ $column_name ];
+				
 			case 'scce_output' :
 				return htmlspecialchars( $item[ $column_name ] );
+				
 			default :
-				//return print_r( $item, true ); //Show the whole array for troubleshooting purposes
 				return isset( $item[ $column_name ] ) ? $item[ $column_name ] : '';
+				
 		}
 		
 	}
@@ -175,7 +178,7 @@ class SCCE_Shortcode_List_Table extends WP_List_Table {
 	 */
 	function get_columns() {
 		
-		$columns = array(
+		return $columns = array(
 			'cb'					=> '<input type="checkbox" />',
 			'scce_tag'				=> __( 'Tag', 'shortcode-creator-easy' ),
 			'shortcode'				=> __( 'Shortcode', 'shortcode-creator-easy' ),
@@ -183,8 +186,6 @@ class SCCE_Shortcode_List_Table extends WP_List_Table {
 			'scce_enclosing'		=> __( 'Enclosing', 'shortcode-creator-easy' ),
 			'scce_output'			=> __( 'Output', 'shortcode-creator-easy' ),
 		);
-		
-		return $columns;
 		
 	}
 	
@@ -194,13 +195,9 @@ class SCCE_Shortcode_List_Table extends WP_List_Table {
 	 * @return array
 	 */
 	public function get_sortable_columns() {
-		
-		$sortable_columns = array(
+		return $sortable_columns = array(
 			'scce_tag' => array( 'scce_tag', false ),
 		);
-		
-		return $sortable_columns;
-		
 	}
 	
 	/**
@@ -210,7 +207,7 @@ class SCCE_Shortcode_List_Table extends WP_List_Table {
 	 *
 	 * @return string
 	 */
-	function column_cb( $item ) {
+	public function column_cb( $item ) {
 		return sprintf(
 			'<input type="checkbox" name="bulk-ids[]" value="%s" />', $item['scce_id']
 		);
@@ -223,7 +220,7 @@ class SCCE_Shortcode_List_Table extends WP_List_Table {
 	 *
 	 * @return string
 	 */
-	function column_scce_tag( $item ) {
+	public function column_scce_tag( $item ) {
 		
 		// create a nonce value for the row actions
 		$_action_nonce		= wp_create_nonce( 'scce_actions_scl' );
@@ -279,6 +276,7 @@ class SCCE_Shortcode_List_Table extends WP_List_Table {
 		
 		// output of the tag column content
 		return $scce_tag . $this->row_actions( $actions );
+		
 	}
 	
 	/**
@@ -288,7 +286,7 @@ class SCCE_Shortcode_List_Table extends WP_List_Table {
 	 *
 	 * @return string
 	 */
-	function column_shortcode( $item ) {
+	public function column_shortcode( $item ) {
 		
 		// create attributes string
 		$scce_attributes = json_decode( $item[ 'scce_attributes' ] );
@@ -300,7 +298,9 @@ class SCCE_Shortcode_List_Table extends WP_List_Table {
 			$index++;
 		}
 		
-		return ( $item[ "scce_enclosing" ] == 'Yes' ) ? '[' . $item[ "scce_tag" ] . $scce_atts . ']' . htmlspecialchars( $item[ "scce_output" ] ) . '[/' . $item[ "scce_tag" ] . ']' : '[' . $item[ "scce_tag" ] . $scce_atts . ']';
+		$value = ( $item[ "scce_enclosing" ] == 'Yes' ) ? '[' . $item[ "scce_tag" ] . $scce_atts . ']' . htmlspecialchars( $item[ "scce_output" ] ) . '[/' . $item[ "scce_tag" ] . ']' : '[' . $item[ "scce_tag" ] . $scce_atts . ']';
+		
+		return '<span class="scce-copy-text" data-tooltip="Click to copy shortcode">' . $value . '</span>';
 		
 	}
 	
@@ -311,7 +311,7 @@ class SCCE_Shortcode_List_Table extends WP_List_Table {
 	 *
 	 * @return string
 	 */
-	function column_scce_attributes( $item ) {
+	public function column_scce_attributes( $item ) {
 		
 		$scce_attributes = json_decode( $item[ 'scce_attributes' ] );
 		
