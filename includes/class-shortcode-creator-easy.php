@@ -117,9 +117,6 @@ class Shortcode_Creator_Easy {
 		// responsible for defining internationalization functionality
 		require_once SCCE_ABSPATH . 'includes/class-scce-i18n.php';
 		
-		// responsible for processing all the notices aroused in the plugin
-		require_once SCCE_ABSPATH . 'includes/class-scce-notices.php';
-		
 		// responsible to manage the table information used in this plugin
 		require_once SCCE_ABSPATH . 'includes/class-scce-db-table.php';
 		
@@ -134,6 +131,9 @@ class Shortcode_Creator_Easy {
 			
 			// responsible to extend the WP_List_Table class to display the shortcodes
 			require_once( SCCE_ABSPATH . 'includes/class-scce-all-shortcodes-list.php' );
+			
+			// responsible for processing all the notices aroused in the plugin
+			require_once SCCE_ABSPATH . 'includes/class-scce-notices.php';
 			
 		}
 		
@@ -168,29 +168,27 @@ class Shortcode_Creator_Easy {
 	 */
 	private function scce_define_admin_hooks() {
 		
-		// only for admin area
-		if ( is_admin() ) {
+		// if not admin then return
+		if ( ! is_admin() ) return;
 			
-			// create a object/instance of SCCE_Admin class
-			$plugin_admin	= new SCCE_Admin( $this->plugin_name, $this->version );
-			
-			// hook to create menu pages
-			$this->loader->scce_add_action_hook( 'admin_menu', $plugin_admin, 'scce_admin_menus' );
-			
-			// hook to enqueue all the admin stylesheets
-			$this->loader->scce_add_action_hook( 'admin_enqueue_scripts', $plugin_admin, 'scce_enqueue_styles' );
-			
-			// hook to enqueue all the admin js scripts
-			$this->loader->scce_add_filter_hook( 'admin_enqueue_scripts', $plugin_admin, 'scce_enqueue_scripts' );
-			
-			// hook to display the aroused notices
-			$this->loader->scce_add_action_hook( 'admin_notices', SCCE_Notices::scce_notice_instance(), 'scce_display_notices' );
-			
-			$form_response	= new SCCE_Form_Response();
-			// hook to submit the scce-add-edit-form using admin-post
-			$this->loader->scce_add_action_hook( 'admin_post_scce_add_edit_submit', $form_response, 'scce_add_edit_response' );
-			
-		}
+		// create a object/instance of SCCE_Admin class
+		$plugin_admin	= new SCCE_Admin( $this->plugin_name, $this->version );
+		
+		// hook to create menu pages
+		$this->loader->scce_add_action_hook( 'admin_menu', $plugin_admin, 'scce_admin_menus' );
+		
+		// hook to enqueue all the admin stylesheets
+		$this->loader->scce_add_action_hook( 'admin_enqueue_scripts', $plugin_admin, 'scce_admin_enqueue_styles' );
+		
+		// hook to enqueue all the admin js scripts
+		$this->loader->scce_add_filter_hook( 'admin_enqueue_scripts', $plugin_admin, 'scce_admin_enqueue_scripts' );
+		
+		// hook to display the aroused notices
+		$this->loader->scce_add_action_hook( 'admin_notices', SCCE_Notices::scce_notice_instance(), 'scce_display_notices' );
+		
+		// hook to submit the scce-add-edit-form using admin-post
+		$form_response	= new SCCE_Form_Response();
+		$this->loader->scce_add_action_hook( 'admin_post_scce_add_edit_submit', $form_response, 'scce_add_edit_response' );
 		
 	}
 	
@@ -199,17 +197,19 @@ class Shortcode_Creator_Easy {
 	 */
 	private function scce_init_hooks() {
 		
-		// register activation hook
-		register_activation_hook( SCE_FILE, array( $this, 'scce_on_activation' ) );
-		
-		// register deactivation hook
-		register_deactivation_hook( SCE_FILE, array( $this, 'scce_on_deactivation' ) );
+		// only for admin area
+		if ( is_admin() ) {
+			
+			// register activation hook
+			register_activation_hook( SCE_FILE, array( $this, 'scce_on_activation' ) );
+			
+			// register deactivation hook
+			register_deactivation_hook( SCE_FILE, array( $this, 'scce_on_deactivation' ) );
+			
+		}
 		
 		// after wordpress initialized fully
 		$this->loader->scce_add_action_hook( 'init', $this, 'scce_do_on_init' );
-		
-		// after a screen is set up
-		$this->loader->scce_add_action_hook( 'current_screen', $this, 'scce_on_current_screen' );
 		
 	}
 	
@@ -281,9 +281,9 @@ class Shortcode_Creator_Easy {
 				
 				// Process the actions from the shortcode list table
 				if ( ( isset( $_GET[ 'action' ] ) && $_GET[ 'action' ] === 'scce-delete' )
-					|| ( isset( $_POST[ 'action' ] ) && $_POST[ 'action' ] === 'bulk-delete' )
-					|| ( isset( $_POST[ 'action2' ] ) && $_POST[ 'action2' ] === 'bulk-delete' )
-					|| ( isset( $_REQUEST[ 'action' ] ) && $_REQUEST[ 'action' ] === 'scce-edit' )
+				     || ( isset( $_POST[ 'action' ] ) && $_POST[ 'action' ] === 'bulk-delete' )
+				     || ( isset( $_POST[ 'action2' ] ) && $_POST[ 'action2' ] === 'bulk-delete' )
+				     || ( isset( $_REQUEST[ 'action' ] ) && $_REQUEST[ 'action' ] === 'scce-edit' )
 				     || ( isset( $_GET[ 'action' ] ) && $_REQUEST[ 'action' ] === 'scce-status' ) ) {
 					
 					$process_action = new SCCE_Process_Actions();
@@ -292,29 +292,6 @@ class Shortcode_Creator_Easy {
 				}
 				
 			}
-			
-		}
-		
-	}
-	
-	/**
-	 * Change footer text and wp version
-	 *
-	 * @return mixed
-	 */
-	function scce_on_current_screen() {
-		
-		global $menu_hooks;
-		
-		$current_screen = get_current_screen();
-		
-		if ( isset( $menu_hooks ) && in_array( $current_screen->id, $menu_hooks ) ) {
-			
-			// change the footer text in the admin area
-			add_filter( 'admin_footer_text', array( $this, 'scce_admin_footer_text' ), 11 );
-			
-			// change the version text in the admin area footer
-			//add_filter( 'update_footer', array( $this, 'scce_admin_footer_version' ), 11 );
 			
 		}
 		
@@ -334,18 +311,6 @@ class Shortcode_Creator_Easy {
 		if ( 'shortcodes_per_page' === $option ) return $value;
 		
 		return $status;
-	}
-
-	/**
-	 * Admin footer text in the plugin pages.
-	 *
-	 * @since    1.0.0
-	 */
-	public function scce_admin_footer_text() {
-		
-		$thank_text = __( 'Thanks for using', 'shortcode-creator-easy' );
-		
-		return sprintf( '<span id="footer-thankyou">%1$s <a href="%2$s">%3$s</a></span>', esc_html( $thank_text ), esc_url( '#' ), esc_html( 'Shortcode Creator Easy' ) );
 	}
 	
 	/**
