@@ -40,7 +40,6 @@
 	color: #ebebeb;
 	transform: translateX(-50%) translateY(var(--translate-y, 0)) scale(var(--scale));
 	transition: 400ms transform;
-	transform-origin: bottom center;
 	z-index: 1;
 }
 .scce-copy-text::before {
@@ -52,6 +51,7 @@
 	text-align: center;
 	width: max-content;
 	background: var(--tooltip-color);
+	transform-origin: bottom center;
 }
 .scce-copy-text:hover::before,
 .scce-copy-text:hover::after {
