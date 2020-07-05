@@ -110,11 +110,9 @@ class SCCE_DB_Table {
 	/**
 	 * Get all shortcode data.
 	 *
-	 * @param int $id scce_id
-	 *
 	 * @return array|object|null
 	 */
-	public function scce_get_shortcode() {
+	public function scce_get_shortcodes() {
 		
 		global $wpdb;
 		
@@ -134,7 +132,7 @@ class SCCE_DB_Table {
 		global $wpdb;
 		
 		return $wpdb->get_row(
-			$wpdb->prepare( "SELECT * FROM {$wpdb->scce_shortcodes} WHERE scce_id=%d", $id )
+			$wpdb->prepare( "SELECT * FROM {$wpdb->scce_shortcodes} WHERE scce_id=%d", (int)esc_sql( $id ) )
 		);
 		
 	}
@@ -151,7 +149,7 @@ class SCCE_DB_Table {
 		global $wpdb;
 		
 		return $wpdb->get_row(
-			$wpdb->prepare( "SELECT * FROM {$wpdb->scce_shortcodes} WHERE scce_tag=%s", $tag )
+			$wpdb->prepare( "SELECT * FROM {$wpdb->scce_shortcodes} WHERE scce_tag=%s", esc_sql( $tag ) )
 		);
 		
 	}
