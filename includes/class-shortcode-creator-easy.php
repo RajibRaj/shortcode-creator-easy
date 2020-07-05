@@ -211,6 +211,9 @@ class Shortcode_Creator_Easy {
 		// after wordpress initialized fully
 		$this->loader->scce_add_action_hook( 'init', $this, 'scce_do_on_init' );
 		
+		// after a screen is set up
+		$this->loader->scce_add_action_hook( 'current_screen', $this, 'scce_on_current_screen' );
+		
 	}
 	
 	/**
@@ -298,6 +301,29 @@ class Shortcode_Creator_Easy {
 	}
 	
 	/**
+	 * Change footer text and wp version
+	 *
+	 * @return mixed
+	 */
+	function scce_on_current_screen() {
+		
+		global $menu_hooks;
+		
+		$current_screen = get_current_screen();
+		
+		if ( isset( $menu_hooks ) && in_array( $current_screen->id, $menu_hooks ) ) {
+			
+			// change the footer text in the admin area
+			add_filter( 'admin_footer_text', array( $this, 'scce_admin_footer_text' ), 11 );
+			
+			// change the version text in the admin area footer
+			add_filter( 'update_footer', array( $this, 'scce_admin_footer_version' ), 11 );
+			
+		}
+		
+	}
+	
+	/**
 	 * Save the per page screen option
 	 *
 	 * @param $status
@@ -311,6 +337,28 @@ class Shortcode_Creator_Easy {
 		if ( 'shortcodes_per_page' === $option ) return $value;
 		
 		return $status;
+	}
+	
+	/**
+	 * Admin footer text in the plugin pages.
+	 *
+	 * @since    1.0.0
+	 */
+	public function scce_admin_footer_text() {
+		
+		$thank_text = __( 'Thanks for using', 'shortcode-creator-easy' );
+		
+		return sprintf( '<span id="footer-thankyou">%1$s <a href="%2$s">%3$s</a></span>', esc_html( $thank_text ), esc_url( 'http://www.webfixings.com/scce/' ), esc_html( 'Shortcode Creator Easy' ) );
+		
+	}
+	
+	/**
+	 * Admin footer version text in the plugin pages.
+	 *
+	 * @since    1.0.0
+	 */
+	public function scce_admin_footer_version() {
+		return sprintf( __( 'Plugin version : %1$s', 'shortcode-creator-easy' ),  SCCE_VERSION );
 	}
 	
 	/**
