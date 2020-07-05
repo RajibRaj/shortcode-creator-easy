@@ -130,6 +130,8 @@ class SCCE_Admin {
 		
 		// if user has not the capability
 		if ( ! current_user_can( $this->capability ) ) return;
+		
+		global $menu_hooks;
 			
 		// Menu
 		$this->menu_hooks[SCCE_NAME]	= add_menu_page( __( 'Shortcode Creator Easy', 'shortcode-creator-easy' ), __( 'SC Creator Easy', 'shortcode-creator-easy' ), $this->capability, SCCE_NAME, array( $this, 'scce_view_all_shortcodes' ), 'dashicons-editor-code', 81 );
@@ -139,14 +141,11 @@ class SCCE_Admin {
 		
 		$this->menu_hooks['scce-add-edit-shortcode']	= add_submenu_page( SCCE_NAME, __( 'Add/Edit Shortcode', 'shortcode-creator-easy' ), __( 'Add/Edit Shortcode', 'shortcode-creator-easy' ), $this->capability, 'scce-add-edit-shortcode', array( $this, 'scce_add_edit_shortcode' ) );
 		
+		// store the menu hooks information in the global $menu_hooks variable
+		$menu_hooks = $this->menu_hooks;
+		
 		// The callback below will be called when the respective page is loaded
 		add_action( 'load-' . $this->menu_hooks[SCCE_NAME], array( $this, 'scce_list_table_screen_options' ) );
-		
-		// change the footer text in the admin area
-		add_filter( 'admin_footer_text', array( $this, 'scce_admin_footer_text' ), 11 );
-		
-		// change the version text in the admin area footer
-		add_filter( 'update_footer', array( $this, 'scce_admin_footer_version' ), 11 );
 		
 	}
 	
@@ -194,28 +193,6 @@ class SCCE_Admin {
 		}
 		$list_table_obj = new SCCE_Shortcode_List_Table();
 		
-	}
-	
-	/**
-	 * Admin footer text in the plugin pages.
-	 *
-	 * @since    1.0.0
-	 */
-	public function scce_admin_footer_text() {
-		
-		$thank_text = __( 'Thanks for using', 'shortcode-creator-easy' );
-		
-		return sprintf( '<span id="footer-thankyou">%1$s <a href="%2$s">%3$s</a></span>', esc_html( $thank_text ), esc_url( 'http://www.webfixings.com/scce/' ), esc_html( 'Shortcode Creator Easy' ) );
-		
-	}
-	
-	/**
-	 * Admin footer version text in the plugin pages.
-	 *
-	 * @since    1.0.0
-	 */
-	public function scce_admin_footer_version() {
-		return sprintf( __( 'Plugin version : %1$s', 'shortcode-creator-easy' ),  SCCE_VERSION );
 	}
 	
 }
