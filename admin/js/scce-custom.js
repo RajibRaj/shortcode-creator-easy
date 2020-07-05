@@ -95,10 +95,29 @@ jQuery(document).ready(function($) {
 	/*-----------*/
 
 	// Toggle list table rows on small screens.
-	$( 'tbody' ).on( 'click', 'toggle-row', function() {
-		$( this ).closest( 'tr' ).toggleClass( 'is-expanded' );
+	$('tbody').on('click', 'toggle-row', function() {
+		$(this).closest('tr').toggleClass('is-expanded');
+	});
+
+	// Onclick copy the shortcode
+	$('.scce-copy-text').on('click', function(e) {
+		e.preventDefault();
+		var contText = $(this).html();
+		copyToClipboard(this, contText);
 	});
 });
+
+// Copy to the clipboard function
+function copyToClipboard(element, contText) {
+	// create a text container(input/textarea)
+	var txtContainer = document.createElement("input");
+	txtContainer.value = contText;
+	document.body.appendChild(txtContainer);
+	txtContainer.select();
+	document.execCommand("Copy");
+	// remove the container
+	txtContainer.remove();
+}
 
 //===========::FORM VALIDATION::===============
 function scceValidateForm(form, location) {
