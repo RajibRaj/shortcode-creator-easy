@@ -102,3 +102,11 @@ if ( ! function_exists( "scce_shortcode_youtube_video" ) ) {
 		<?php return ob_get_clean();
 	}
 }
+add_shortcode( "test-code-25", "scce_shortcode_test_code_25" );
+if ( ! function_exists( "scce_shortcode_test_code_25" ) ) {
+	function scce_shortcode_test_code_25( $params, $content = null ) {
+		ob_start(); ?>
+		<?php echo do_shortcode( $content ); ?>
+		<?php return ob_get_clean();
+	}
+}
