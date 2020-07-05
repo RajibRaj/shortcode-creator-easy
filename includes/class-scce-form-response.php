@@ -39,8 +39,10 @@ class SCCE_Form_Response {
 	 * @since    1.0.0
 	 */
 	public function __construct() {
+		
 		global $wpdb;
 		$this->table_name		= $wpdb->scce_shortcodes;
+		
 	}
 	
 	/**
@@ -56,9 +58,9 @@ class SCCE_Form_Response {
 	 */
 	public function scce_add_edit_response() {
 		
-		global $wpdb;
-		
 		if ( current_user_can( 'manage_options' ) ) {
+			
+			global $wpdb;
 			
 			if ( isset( $_POST[ '_wpnonce_add_edit_shortcode' ] ) && wp_verify_nonce( $_POST[ '_wpnonce_add_edit_shortcode' ], 'scce_add_edit_shortcode' ) ) {
 					
@@ -136,11 +138,15 @@ class SCCE_Form_Response {
 								$text .= "\n\t";
 								$text .= 'function scce_shortcode_' . $fun_name_suffix . '( $params, $content = null ) {';
 								$text .= "\n\t\t";
-								$text .= '$scce_sc_atts = shortcode_atts( array(';
-								$text .= $scce_atts_array_elem;
-								$text .= "\n\t\t";
-								$text .= '), $params );';
-								$text .= "\n\t\t";
+								
+								if ( $scce_atts_array_elem ) {
+									$text .= '$scce_sc_atts = shortcode_atts( array(';
+									$text .= $scce_atts_array_elem;
+									$text .= "\n\t\t";
+									$text .= '), $params );';
+									$text .= "\n\t\t";
+								}
+								
 								$text .= 'ob_start(); ?>';
 								$text .= "\n\t\t";
 								$text .= wp_unslash( $scce_output );
@@ -200,7 +206,7 @@ class SCCE_Form_Response {
 										
 										if ( $saved_file ) {
 											
-											/*---Insert Data to Database---*/
+											/*---Insert/Update Data to Database---*/
 											if ( isset( $shortcode->scce_id ) && !empty( $shortcode->scce_id ) ) {
 												
 												$result = $wpdb->update( $this->table_name,
@@ -216,6 +222,9 @@ class SCCE_Form_Response {
 													array( '%s', '%s', '%s', '%s', '%s', '%s' ),
 													array( '%d' )
 												);
+												
+												$message = ( $result ) ? __( 'The shortcode updated successfully.', 'shortcode-creator-easy' ) : __( 'The shortcode was not updated.', 'shortcode-creator-easy' );
+												$msg_type = ( $result ) ? 'success' : 'error';
 												
 											} else {
 												
@@ -233,28 +242,17 @@ class SCCE_Form_Response {
 													array( '%s', '%s', '%s', '%s', '%s', '%s', '%d', '%s' )
 												);
 												
+												$message = ( $result ) ? __( 'The shortcode added successfully.', 'shortcode-creator-easy' ) : __( 'The shortcode was not added.', 'shortcode-creator-easy' );
+												$msg_type = ( $result ) ? 'success' : 'error';
+												
 											}
 											
-											if ( $result ) {
-												
-												SCCE_Notices::scce_notice_instance()->scce_add_notice( __( 'The shortcode saved successfully.', 'shortcode-creator-easy' ), 'success' );
-												
-											} else {
-												
-												// remove the output code saved above
-												// get the current content in the file
-												$current_content = @file_get_contents( $shortcode_keeper );
-												$new_content = str_replace( htmlentities( $text ) . "\r\n", '', htmlentities( $current_content ) );
-												// save the file again
-												@file_put_contents( $shortcode_keeper, html_entity_decode( $new_content ) );
-												
-												SCCE_Notices::scce_notice_instance()->scce_add_notice( __( 'The shortcode can not be saved in the database', 'shortcode-creator-easy' ), 'success' );
-												
-											}
+											// set message for add/update result
+											SCCE_Notices::scce_notice_instance()->scce_add_notice( $message, $msg_type );
 											
 										} else {
 											
-											SCCE_Notices::scce_notice_instance()->scce_add_notice( __( 'The shortcode can not be stored', 'shortcode-creator-easy' ), 'success' );
+											SCCE_Notices::scce_notice_instance()->scce_add_notice( __( 'The shortcode can not be stored', 'shortcode-creator-easy' ), 'error' );
 											
 										}
 										
