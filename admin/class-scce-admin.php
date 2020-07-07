@@ -178,7 +178,7 @@ class SCCE_Admin {
 		
 		$arguments = array(
 			'label'		=>	__( 'Shortcodes Per Page', 'shortcode-creator-easy' ),
-			'default'	=>	10,
+			'default'	=>	20,
 			'option'	=>	'shortcodes_per_page'
 		);
 		add_screen_option( 'per_page', $arguments );
