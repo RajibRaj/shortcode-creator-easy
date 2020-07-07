@@ -1,8 +1,8 @@
 <?php
 /**
  * Plugin Name:       Shortcode Creator Easy
- * Plugin URI:        http://www.webfixings.com/scce/
- * Description:       A simply organized plugin to create custom shortcodes for displaying the shortcode content anywhere in WP pages, posts and widgets as the requirements. The HTML/JavaScript/CSS content which are used several times in the site can be used as shortcode using this plugin.
+ * Plugin URI:        http://www.webfixings.com/
+ * Description:       Shortcode Creator Easy is a simply organized WP shortcode builder to create custom shortcodes for displaying the shortcode content anywhere in WP pages, posts and widgets as the requirements. The HTML/JavaScript/CSS content which are used several times in the site can be used as shortcode using this plugin. The user can create custom shortcode from the admin panel without doing any hard code.
  * Version:           1.0.0
  * Author:            Rajib Dey
  * Author URI:        http://www.webfixings.com/
