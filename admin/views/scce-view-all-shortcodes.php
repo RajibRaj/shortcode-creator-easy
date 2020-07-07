@@ -28,7 +28,7 @@ $add_new_url	= menu_page_url( 'scce-add-edit-shortcode', false );
 
 <div class="wrap all-shortcode">
 	<h1 CLASS="wp-heading-inline"><?php echo _x( 'Shortcodes', 'Page Heading', 'shortcode-creator-easy' ); ?></h1>
-	<a href="<?php echo esc_url( $add_new_url ); ?>" class="page-title-action button"><?php echo __( 'Add New', 'shortcode-creator-easy' ); ?></a>
+	<a href="<?php echo esc_url( $add_new_url ); ?>" class="page-title-action"><?php echo __( 'Add New', 'shortcode-creator-easy' ); ?></a>
 	<hr class="wp-header-end">
 	<form method="post">
 		<?php
