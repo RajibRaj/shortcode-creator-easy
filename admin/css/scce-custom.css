@@ -68,15 +68,14 @@
 /*----------*/
 
 /*--submit button--*/
-.all-shortcode .page-title-action{
-	vertical-align: baseline;
-}
 .scce-add-edit-sc .button,
-.all-shortcode .button {
+.all-shortcode .button,
+.all-shortcode .page-title-action {
 	transition: 0.5s;
 }
 .scce-add-edit-sc .button:hover,
-.all-shortcode .button:hover{
+.all-shortcode .button:hover,
+.all-shortcode .page-title-action:hover {
 	background-color: #0071a1;
 	color: #f3f5f6;
 }
