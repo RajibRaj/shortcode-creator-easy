@@ -1,4 +1,5 @@
 === Shortcode Creator Easy ===
+A WORDPRESS PLUGIN TO CREATE SHORTCODES FOR PAGES, POSTS and WIDGETS
 
 Contributors: Rajib Dey
 Tags: shortcode, shortcoder, custom shortcode, create shortcode, generate shortcode, shortcode creator, shortcode generator, wp shortcode, wordpress, widgets, wp api
